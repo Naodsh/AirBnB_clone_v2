@@ -3,13 +3,11 @@
 
 from fabric.api import *
 from os.path import exists
-
 env.hosts = ['52.91.184.90', '35.174.211.198']
 
 
 def do_deploy(archive_path):
     """Distributes an archive to web servers"""
-
     if not exists(archive_path):
         return False
     try:
