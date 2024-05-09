@@ -3,8 +3,10 @@
 
 from fabric.api import *
 from os.path import exists
-env.hosts = ['52.91.184.90', '35.174.211.198']
 
+env.hosts = ['52.91.184.90', '100.26.160.131']
+env.user = 'ubuntu'
+env.my_ssh_private_key = '~/.ssh/id_rsa'
 
 def do_deploy(archive_path):
     """Distributes an archive to web servers"""
@@ -23,3 +25,5 @@ def do_deploy(archive_path):
         run('rm -rf /data/web_static/current')
         run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
+    except:
+        return False
