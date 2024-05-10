@@ -8,6 +8,7 @@ env.hosts = ['52.91.184.90', '100.26.160.131']
 env.user = 'ubuntu'
 env.my_ssh_private_key = '~/.ssh/id_rsa'
 
+
 def do_deploy(archive_path):
     """Distributes an archive to web servers"""
     if not exists(archive_path):
@@ -25,5 +26,5 @@ def do_deploy(archive_path):
         run('rm -rf /data/web_static/current')
         run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-    except:
+    except True:
         return False
