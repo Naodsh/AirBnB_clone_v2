@@ -25,14 +25,30 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query on the current database session"""
-        objects = {}
-        if cls:
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+         classes = {
+            "User": User,
+            "Place": Place,
+            "State": State,
+            "City": City,
+            "Amenity": Amenity,
+            "Review": Review
+            }
+
+         objects = {}
+         if cls:
             query = self.__session.query(eval(cls.__name__))
             for obj in query:
                 key = "{}.{}".format(type(obj).__name__, obj.id)
                 objects[key] = obj
-        else:
-            for table in Base.metadata.tables.keys():
+            else:
+                for table in Base.metadata.tables.keys():
                 if table != 'states' and table != 'cities':
                     query = self.__session.query(eval(table))
                     for obj in query:
@@ -54,9 +70,20 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
         """Create all tables in the database"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
                 bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """Close the current SQLAlchemy session"""
+        self.__session.remove()
