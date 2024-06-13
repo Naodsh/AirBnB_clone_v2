@@ -32,7 +32,7 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-         classes = {
+        classes = {
             "User": User,
             "Place": Place,
             "State": State,
@@ -41,19 +41,20 @@ class DBStorage:
             "Review": Review
             }
 
-         objects = {}
-         if cls:
+        objects = {}
+        if cls:
             query = self.__session.query(eval(cls.__name__))
             for obj in query:
                 key = "{}.{}".format(type(obj).__name__, obj.id)
                 objects[key] = obj
-            else:
-                for table in Base.metadata.tables.keys():
+        else:
+            for table in Base.metadata.tables.keys():
                 if table != 'states' and table != 'cities':
                     query = self.__session.query(eval(table))
                     for obj in query:
                         key = "{}.{}".format(type(obj).__name__, obj.id)
                         objects[key] = obj
+
         return objects
 
     def new(self, obj):
