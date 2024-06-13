@@ -48,12 +48,11 @@ class DBStorage:
                 key = "{}.{}".format(type(obj).__name__, obj.id)
                 objects[key] = obj
         else:
-            for table in Base.metadata.tables.keys():
-                if table != 'states' and table != 'cities':
-                    query = self.__session.query(eval(table))
-                    for obj in query:
-                        key = "{}.{}".format(type(obj).__name__, obj.id)
-                        objects[key] = obj
+            for cls_name in classes.values():
+                query = self.__session.query(cls_name).all()
+                for obj in query:
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    objects[key] = obj
 
         return objects
 
